@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import '../../hyechang/custom_bottom_navigation_bar.dart';
+import '../../hyechang/fontstyle.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -39,19 +40,16 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: StoreText(
           '설정',
-          style: AppTheme.titleStyle.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.045,
-          ),
+          fontSize: screenWidth * 0.05,
         ),
         centerTitle: true,
         backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 18),
+            padding: EdgeInsets.only(right: screenWidth * 0.05),
             child: Image.asset(
               'lib/hyundo/assets/notificationIcon.png',
               width: screenWidth * 0.055,
@@ -65,7 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
           SizedBox(height: screenHeight * 0.03),
           // Alarm Setting Card
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
             height: screenHeight * 0.06, // 고정된 높이 설정
             decoration: BoxDecoration(
               color: Colors.white,
@@ -80,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -92,13 +90,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: screenWidth * 0.04,
                         fit: BoxFit.contain,
                       ),
-                      const SizedBox(width: 17),
-                      const Text(
+                      SizedBox(width: screenWidth * 0.04),
+                      StoreText(
                         '알림',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        fontSize: screenWidth * 0.042,
+                        fontWeight: FontWeight.normal,
                       ),
                     ],
                   ),
@@ -120,7 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // Inventory Settings Card
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -137,7 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Container(
                   height: screenHeight * 0.06, // 알림 설정 카드와 동일한 높이
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center, // 세로 중앙 정렬
                     children: [
@@ -146,13 +142,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: screenWidth * 0.045,
                         fit: BoxFit.contain,
                       ),
-                      const SizedBox(width: 16),
-                      const Text(
+                      SizedBox(width: screenWidth * 0.04),
+                      StoreText(
                         '재고 부족 개수 설정',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        fontSize: screenWidth * 0.042,
+                        fontWeight: FontWeight.normal,
                       ),
                       const Spacer(),
                       GestureDetector(
@@ -173,16 +167,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
                 if (showInventoryInput)
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center, // 세로 중앙 정렬
                       children: [
-                        const Text(
+                        StoreText(
                           '재고 부족 기준',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          fontSize: screenWidth * 0.042,
+                          fontWeight: FontWeight.normal,
                         ),
                         SizedBox(width: screenWidth * 0.03),
                         Expanded(
@@ -196,14 +188,14 @@ class _SettingsPageState extends State<SettingsPage> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 width: screenWidth * 0.15,
-                                child: const Center(
+                                child: Center(
                                   child: TextField(
                                     textAlign: TextAlign.center,
                                     textInputAction: TextInputAction.done,
                                     keyboardType: TextInputType.number, // 숫자 키패드
                                     style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500
+                                      fontSize: screenWidth * 0.04,
+                                      fontWeight: FontWeight.normal
                                     ),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -220,12 +212,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                               ),
                               SizedBox(width: screenWidth * 0.01),
-                              const Text(
+                              StoreText(
                                 '개 이하',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                fontSize: screenWidth * 0.042,
+                                fontWeight: FontWeight.normal,
                               ),
                             ],
                           ),

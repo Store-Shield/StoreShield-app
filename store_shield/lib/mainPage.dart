@@ -3,7 +3,6 @@ import 'package:store_shield/hyundo/screens/cctv_page.dart';
 import 'package:store_shield/sangwoo/salesHistoryPage.dart';
 import 'package:store_shield/sunbin/managementPage.dart';
 import 'hyechang/custom_bottom_navigation_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'hyechang/fontstyle.dart';
 
 class MainPage extends StatefulWidget {

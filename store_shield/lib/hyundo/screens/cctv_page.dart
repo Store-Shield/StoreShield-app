@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'cctv_stream_view.dart';
 import '../../mainPage.dart';
+import '../../hyechang/fontstyle.dart';
 
 class CctvPage extends StatefulWidget {
   const CctvPage({Key? key}) : super(key: key);
@@ -59,12 +60,9 @@ class _CctvPageState extends State<CctvPage> {
                           // Center text (absolute center of the container)
                           Align(
                             alignment: Alignment.center,
-                            child: Text(
-                              '실시간 CCTV',
-                              style: AppTheme.titleStyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: screenWidth * 0.045,
-                              ),
+                            child: StoreText(
+                              '실시간 CCTV', 
+                              fontSize: screenWidth * 0.045, 
                             ),
                           ),
                           

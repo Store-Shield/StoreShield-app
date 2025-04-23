@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../theme/app_theme.dart';
 import '../../hyechang/custom_bottom_navigation_bar.dart';
+import '../../hyechang/fontstyle.dart';
 
 class SalesPage extends StatelessWidget {
   const SalesPage({super.key});
@@ -37,19 +38,16 @@ class _SalesPageState extends State<SalePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '매출',
-          style: AppTheme.titleStyle.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.045,
-          ),
+        title: StoreText(
+          '매출', 
+          fontSize: screenWidth * 0.05, 
         ),
         centerTitle: true,
         backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 18),
+            padding: EdgeInsets.only(right: screenWidth * 0.05),
             child: Image.asset(
               'lib/hyundo/assets/notificationIcon.png',
               width: screenWidth * 0.055,
@@ -69,9 +67,9 @@ class _SalesPageState extends State<SalePage> {
                   horizontal: screenWidth * 0.05,
                   vertical: screenHeight * 0.02,
                 ),
-                child: Text(
+                child: StoreText(
                   '매출 현황',
-                  style: AppTheme.titleStyle.copyWith(fontSize: screenWidth * 0.05),
+                  fontSize: screenWidth * 0.05,
                 ),
               ),
 
@@ -111,13 +109,11 @@ class _SalesPageState extends State<SalePage> {
                                   children: [
                                     Expanded(
                                       child: Center(
-                                        child: Text(
+                                        child: StoreText(
                                           periods[i],
-                                          style: TextStyle(
-                                            color: selectedPeriodIndex == i ? Colors.pink : Colors.black,
-                                            fontWeight: selectedPeriodIndex == i ? FontWeight.bold : FontWeight.normal,
-                                            fontSize: screenWidth * 0.035,
-                                          ),
+                                          color: selectedPeriodIndex == i ? Colors.pink : Colors.black,
+                                          fontWeight: selectedPeriodIndex == i ? FontWeight.bold : FontWeight.normal,
+                                          fontSize: screenWidth * 0.04,
                                         ),
                                       ),
                                     ),
@@ -137,13 +133,10 @@ class _SalesPageState extends State<SalePage> {
 
                     // 매출 총액
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenHeight * 0.02),
-                      child: Text(
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.02),
+                      child: StoreText(
                         '₩ 120,231',
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.06,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        fontSize: screenWidth * 0.06,
                       ),
                     ),
 
@@ -164,14 +157,14 @@ class _SalesPageState extends State<SalePage> {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('D-6', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('D-5', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('D-4', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('D-3', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('D-2', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('D-1', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('today', style: TextStyle(fontWeight: FontWeight.bold)),
+                        children: [
+                          StoreText('D-6', fontSize: screenWidth * 0.035),
+                          StoreText('D-5', fontSize: screenWidth * 0.035),
+                          StoreText('D-4', fontSize: screenWidth * 0.035),
+                          StoreText('D-3', fontSize: screenWidth * 0.035),
+                          StoreText('D-2', fontSize: screenWidth * 0.035),
+                          StoreText('D-1', fontSize: screenWidth * 0.035),
+                          StoreText('today', fontSize: screenWidth * 0.035),
                         ],
                       ),
                     ),
@@ -184,9 +177,9 @@ class _SalesPageState extends State<SalePage> {
               // 매출액 비교 헤더
               Padding(
                 padding: EdgeInsets.all(screenWidth * 0.05),
-                child: Text(
+                child: StoreText(
                   '매출액 비교',
-                  style: AppTheme.titleStyle.copyWith(fontSize: screenWidth * 0.05),
+                  fontSize: screenWidth * 0.05
                 ),
               ),
 
@@ -205,14 +198,14 @@ class _SalesPageState extends State<SalePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('이번달', style: AppTheme.titleStyle),
+                            StoreText(
+                              '이번달',
+                              fontSize: screenWidth * 0.045,
+                            ),
                             SizedBox(height: screenHeight * 0.01),
-                            Text(
+                            StoreText(
                               '₩ 120,231',
-                              style: TextStyle(
-                                fontSize: screenWidth * 0.05,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              fontSize: screenWidth * 0.05,
                             ),
                           ],
                         ),
@@ -229,14 +222,14 @@ class _SalesPageState extends State<SalePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('지난달', style: AppTheme.titleStyle),
+                            StoreText(
+                              '지난달',
+                              fontSize: screenWidth * 0.045,
+                            ),
                             SizedBox(height: screenHeight * 0.01),
-                            Text(
+                            StoreText(
                               '₩ 232,540',
-                              style: TextStyle(
-                                fontSize: screenWidth * 0.05,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              fontSize: screenWidth * 0.05,
                             ),
                           ],
                         ),
@@ -259,25 +252,22 @@ class _SalesPageState extends State<SalePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('전월대비 매출액', style: AppTheme.titleStyle),
+                      StoreText(
+                        '전월대비 매출액',
+                        fontSize: screenWidth * 0.045,
+                      ),
                       SizedBox(height: screenHeight * 0.01),
                       Row(
                         children: [
-                          Text(
+                          StoreText(
                             '- ',
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.055,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[600],
-                            ),
+                            fontSize: screenWidth * 0.055,
+                            color: Colors.red,
                           ),
-                          Text(
+                          StoreText(
                             '₩ 170,231',
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.05,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[600],
-                            ),
+                            fontSize: screenWidth * 0.05,
+                            color: Colors.red,
                           ),
                         ],
                       ),
