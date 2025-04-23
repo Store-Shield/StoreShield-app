@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:store_shield/hyundo/cctvPage.dart';
+import 'package:store_shield/hyundo/screens/cctv_page.dart';
 import 'package:store_shield/sangwoo/salesHistoryPage.dart';
 import 'package:store_shield/sunbin/managementPage.dart';
 import 'hyechang/custom_bottom_navigation_bar.dart';
