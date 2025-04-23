@@ -74,14 +74,13 @@ class _MainPageState extends State<MainPage> {
                                         const CctvPage(),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
-                                      return SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: const Offset(1.0, 0.0),
-                                          end: Offset.zero,
-                                        ).animate(animation),
+                                      return FadeTransition(
+                                        opacity: animation,
                                         child: child,
                                       );
                                     },
+                                    transitionDuration:
+                                        const Duration(milliseconds: 300),
                                   ),
                                 );
                               },
@@ -101,14 +100,13 @@ class _MainPageState extends State<MainPage> {
                                         const ManagementPage(),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
-                                      return SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: const Offset(1.0, 0.0),
-                                          end: Offset.zero,
-                                        ).animate(animation),
+                                      return FadeTransition(
+                                        opacity: animation,
                                         child: child,
                                       );
                                     },
+                                    transitionDuration:
+                                        const Duration(milliseconds: 300),
                                   ),
                                 );
                               },
@@ -128,14 +126,13 @@ class _MainPageState extends State<MainPage> {
                                         const SaleshistoryPage(),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
-                                      return SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: const Offset(1.0, 0.0),
-                                          end: Offset.zero,
-                                        ).animate(animation),
+                                      return FadeTransition(
+                                        opacity: animation,
                                         child: child,
                                       );
                                     },
+                                    transitionDuration:
+                                        const Duration(milliseconds: 300),
                                   ),
                                 );
                               },
