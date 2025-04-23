@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Column(
         children: [
-          SizedBox(height: screenHeight * 0.01),
+          SizedBox(height: screenHeight * 0.03),
           // Alarm Setting Card
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),

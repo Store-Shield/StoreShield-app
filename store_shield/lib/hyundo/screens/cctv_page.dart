@@ -47,50 +47,42 @@ class _CctvPageState extends State<CctvPage> {
                     ),
                   ],
                 ),
+                
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(bottom: screenHeight * 0.025), // 👈 적절한 간격
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      padding: EdgeInsets.only(bottom: screenHeight * 0.025),
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          // ← 뒤로가기 버튼 (MainPage 이동)
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (_) => const MainPage()),
-                              );
-                            },
-                            child: Image.asset(
-                              'lib/hyundo/assets/backBtnIcon.png',
-                              width: screenWidth * 0.055,
-                              fit: BoxFit.contain,
+                          // Center text (absolute center of the container)
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '실시간 CCTV',
+                              style: AppTheme.titleStyle.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: screenWidth * 0.045,
+                              ),
                             ),
                           ),
-
-                          // 중앙 타이틀
-                          Text(
-                            '실시간 CCTV',
-                            style: AppTheme.titleStyle.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenWidth * 0.045,
-                            ),
-                          ),
-
-                          // → 홈 아이콘 (MainPage 이동)
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (_) => const MainPage()),
-                              );
-                            },
-                            child: Image.asset(
-                              'lib/hyundo/assets/mainPageIcon.png',
-                              width: screenWidth * 0.055,
-                              fit: BoxFit.contain,
+                          
+                          // Left-aligned back button
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => const MainPage()),
+                                );
+                              },
+                              child: Image.asset(
+                                'lib/hyundo/assets/backBtnIcon.png',
+                                width: screenWidth * 0.055,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ],
@@ -127,8 +119,8 @@ class _CctvPageState extends State<CctvPage> {
                               });
                             },
                             child: Container(
-                              width: 56,
-                              height: 56,
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
                               decoration: const BoxDecoration(
                                 color: Colors.black54,
                                 shape: BoxShape.circle,

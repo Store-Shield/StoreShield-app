@@ -71,7 +71,7 @@ class _SalesPageState extends State<SalePage> {
                 ),
                 child: Text(
                   '매출 현황',
-                  style: AppTheme.titleStyle.copyWith(fontSize: 22),
+                  style: AppTheme.titleStyle.copyWith(fontSize: screenWidth * 0.05),
                 ),
               ),
 
@@ -116,7 +116,7 @@ class _SalesPageState extends State<SalePage> {
                                           style: TextStyle(
                                             color: selectedPeriodIndex == i ? Colors.pink : Colors.black,
                                             fontWeight: selectedPeriodIndex == i ? FontWeight.bold : FontWeight.normal,
-                                            fontSize: 15,
+                                            fontSize: screenWidth * 0.035,
                                           ),
                                         ),
                                       ),
@@ -138,10 +138,10 @@ class _SalesPageState extends State<SalePage> {
                     // 매출 총액
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenHeight * 0.02),
-                      child: const Text(
+                      child: Text(
                         '₩ 120,231',
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: screenWidth * 0.06,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -165,13 +165,13 @@ class _SalesPageState extends State<SalePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
-                          Text('월', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('화', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('수', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('목', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('금', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('토', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('일', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('D-6', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('D-5', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('D-4', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('D-3', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('D-2', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('D-1', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('today', style: TextStyle(fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
@@ -186,13 +186,13 @@ class _SalesPageState extends State<SalePage> {
                 padding: EdgeInsets.all(screenWidth * 0.05),
                 child: Text(
                   '매출액 비교',
-                  style: AppTheme.titleStyle.copyWith(fontSize: 22),
+                  style: AppTheme.titleStyle.copyWith(fontSize: screenWidth * 0.05),
                 ),
               ),
 
               // 이번달/지난달
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                 child: Row(
                   children: [
                     Expanded(
@@ -201,16 +201,16 @@ class _SalesPageState extends State<SalePage> {
                           color: AppTheme.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        padding: EdgeInsets.all(screenWidth * 0.04),
-                        child: const Column(
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.025),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('이번달', style: AppTheme.titleStyle),
-                            SizedBox(height: 10),
+                            SizedBox(height: screenHeight * 0.01),
                             Text(
                               '₩ 120,231',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: screenWidth * 0.05,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -225,16 +225,16 @@ class _SalesPageState extends State<SalePage> {
                           color: AppTheme.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        padding: EdgeInsets.all(screenWidth * 0.04),
-                        child: const Column(
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.025),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('지난달', style: AppTheme.titleStyle),
-                            SizedBox(height: 10),
+                            SizedBox(height: screenHeight * 0.01),
                             Text(
                               '₩ 232,540',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: screenWidth * 0.05,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -248,25 +248,25 @@ class _SalesPageState extends State<SalePage> {
 
               // 전월대비 매출
               Padding(
-                padding: EdgeInsets.all(screenWidth * 0.05),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenHeight * 0.02),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppTheme.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  padding: EdgeInsets.all(screenWidth * 0.04),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.025),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('전월대비 매출액', style: AppTheme.titleStyle),
-                      const SizedBox(height: 10),
+                      SizedBox(height: screenHeight * 0.01),
                       Row(
                         children: [
                           Text(
                             '- ',
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: screenWidth * 0.055,
                               fontWeight: FontWeight.bold,
                               color: Colors.red[600],
                             ),
@@ -274,7 +274,7 @@ class _SalesPageState extends State<SalePage> {
                           Text(
                             '₩ 170,231',
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: screenWidth * 0.05,
                               fontWeight: FontWeight.bold,
                               color: Colors.red[600],
                             ),
@@ -286,7 +286,7 @@ class _SalesPageState extends State<SalePage> {
                 ),
               ),
 
-              SizedBox(height: 20), // bottom padding
+              SizedBox(height: screenHeight * 0.02), // bottom padding
             ],
           ),
         ),
