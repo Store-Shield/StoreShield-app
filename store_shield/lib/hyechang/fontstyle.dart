@@ -5,11 +5,13 @@ class StoreText extends StatelessWidget {
   final String text;
   final double fontSize;
   final Color color;
+  final FontWeight fontWeight;
 
   const StoreText(
     this.text, {
     this.fontSize = 22,
     this.color = Colors.black,
+    this.fontWeight = FontWeight.bold,
     super.key,
   });
 
@@ -18,7 +20,7 @@ class StoreText extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.jua(
-        fontWeight: FontWeight.bold,
+        fontWeight: fontWeight,
         fontSize: fontSize,
         color: color,
       ),
