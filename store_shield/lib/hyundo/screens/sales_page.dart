@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../theme/app_theme.dart';
 import '../../hyechang/custom_bottom_navigation_bar.dart';
 import '../../hyechang/fontstyle.dart';
 
 class SalesPage extends StatelessWidget {
   const SalesPage({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '매출 대시보드',
-      theme: ThemeData(
-        scaffoldBackgroundColor: AppTheme.backgroundColor,
-      ),
       home: const SalePage(),
       debugShowCheckedModeBanner: false,
     );
@@ -30,6 +26,8 @@ class SalePage extends StatefulWidget {
 class _SalesPageState extends State<SalePage> {
   int selectedPeriodIndex = 0;
   final List<String> periods = ['Daily', 'Monthly', 'Yearly'];
+  static const Color backgroundColor = Color.fromRGBO(242, 245, 253, 1);
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +41,7 @@ class _SalesPageState extends State<SalePage> {
           fontSize: screenWidth * 0.05, 
         ),
         centerTitle: true,
-        backgroundColor: AppTheme.backgroundColor,
+        backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
           Padding(
@@ -63,10 +61,7 @@ class _SalesPageState extends State<SalePage> {
             children: [
               // 매출 현황
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.05,
-                  vertical: screenHeight * 0.02,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.01),
                 child: StoreText(
                   '매출 현황',
                   fontSize: screenWidth * 0.05,
@@ -172,11 +167,11 @@ class _SalesPageState extends State<SalePage> {
                 ),
               ),
 
-              SizedBox(height: screenHeight * 0.03),
+              SizedBox(height: screenHeight * 0.04),
               
               // 매출액 비교 헤더
               Padding(
-                padding: EdgeInsets.all(screenWidth * 0.05),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.01),
                 child: StoreText(
                   '매출액 비교',
                   fontSize: screenWidth * 0.05
@@ -191,7 +186,7 @@ class _SalesPageState extends State<SalePage> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppTheme.white,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.025),
@@ -211,11 +206,11 @@ class _SalesPageState extends State<SalePage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: screenWidth * 0.03),
+                    SizedBox(width: screenWidth * 0.04),
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppTheme.white,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.025),
@@ -245,7 +240,7 @@ class _SalesPageState extends State<SalePage> {
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppTheme.white,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.025),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
 import 'cctv_stream_view.dart';
 import '../../mainPage.dart';
 import '../../hyechang/fontstyle.dart';
+
 
 class CctvPage extends StatefulWidget {
   const CctvPage({Key? key}) : super(key: key);
@@ -13,6 +13,7 @@ class CctvPage extends StatefulWidget {
 
 class _CctvPageState extends State<CctvPage> {
   bool _isPlaying = false;
+  static const Color backgroundColor = Color.fromRGBO(242, 245, 253, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class _CctvPageState extends State<CctvPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: backgroundColor,
       body: Center(
         child: Container(
           width: screenWidth,
@@ -35,7 +36,7 @@ class _CctvPageState extends State<CctvPage> {
                 height: screenHeight * 0.14,
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                 decoration: BoxDecoration(
-                  color: AppTheme.white,
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(screenWidth * 0.06),
                     bottomRight: Radius.circular(screenWidth * 0.06),

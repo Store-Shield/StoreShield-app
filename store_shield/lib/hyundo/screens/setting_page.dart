@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import '../../hyechang/custom_bottom_navigation_bar.dart';
 import '../../hyechang/fontstyle.dart';
@@ -11,10 +10,6 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Settings Page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: AppTheme.backgroundColor,
-      ),
       home: const SettingsPage(),
       debugShowCheckedModeBanner: false,
     );
@@ -32,6 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool alarmEnabled = false;
   bool inventoryThresholdEnabled = true;
   bool showInventoryInput = false;
+  static const Color backgroundColor = Color.fromRGBO(242, 245, 253, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +41,7 @@ class _SettingsPageState extends State<SettingsPage> {
           fontSize: screenWidth * 0.05,
         ),
         centerTitle: true,
-        backgroundColor: AppTheme.backgroundColor,
+        backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
           Padding(
