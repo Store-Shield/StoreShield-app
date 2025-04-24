@@ -26,7 +26,7 @@ class StockAlertItem extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 12),
+        padding: const EdgeInsets.fromLTRB(12.0, 10, 0, 12),
         child: Row(
           children: [
             // 제품 이미지

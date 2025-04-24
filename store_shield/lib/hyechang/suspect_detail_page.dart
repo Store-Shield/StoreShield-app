@@ -176,23 +176,17 @@ class SuspectDetailPage extends StatelessWidget {
                     const SizedBox(height: 16),
                     Stack(
                       children: [
-                        // 섬네일 이미지
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Container(
                             width: double.infinity,
                             height: 180,
                             color: Colors.grey.shade200,
-                            child: suspect.thumbnail != null
-                                ? Image.memory(
-                                    base64Decode(suspect
-                                        .getBase64String(suspect.thumbnail!)),
-                                    fit: BoxFit.cover,
-                                  )
-                                : const Center(
-                                    child: Icon(Icons.videocam_off,
-                                        size: 50, color: Colors.grey),
-                                  ),
+                            child: suspect.getThumbnailImage(
+                              width: double.infinity,
+                              height: 180,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         // 시간 표시
@@ -258,7 +252,8 @@ class SuspectDetailPage extends StatelessWidget {
                                   // 서버 URL - 소켓 서비스와 동일한 기본 URL 사용
                                   const baseUrl = SocketConfig.socketURL;
                                   //일단 20
-                                  const url = '$baseUrl/download_video/20';
+                                  final url =
+                                      '$baseUrl/download_video/${suspect.id}';
 
                                   // 이전 방식 사용 (string 기반)
                                   if (await canLaunchUrlString(url)) {

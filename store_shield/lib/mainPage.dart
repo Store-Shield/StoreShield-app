@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:store_shield/hyundo/cctvPage.dart';
+import 'package:store_shield/hyundo/screens/cctv_page.dart';
 import 'package:store_shield/sangwoo/salesHistoryPage.dart';
-import 'package:store_shield/sunbin/managementPage.dart';
+import 'package:store_shield/sunbin_pages/managementPage/management_page.dart';
 import 'hyechang/custom_bottom_navigation_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'hyechang/fontstyle.dart';
 import 'hyechang/alertPage.dart';

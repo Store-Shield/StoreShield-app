@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:store_shield/hyundo/salesPage.dart';
-import 'package:store_shield/hyundo/settingsPage.dart';
+import 'package:store_shield/hyundo/screens/sales_page.dart';
+import 'package:store_shield/hyundo/screens/setting_page.dart';
 import 'package:store_shield/mainPage.dart';
 // 화면 import (예시)
-import '../hyundo/salesPage.dart';
-import '../hyundo/settingsPage.dart';
 
 class StoreShieldNaviBar extends StatelessWidget {
   final int currentIndex;
@@ -52,7 +50,7 @@ class StoreShieldNaviBar extends StatelessWidget {
             case 2:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const Settingspage()),
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
               );
               break;
           }
