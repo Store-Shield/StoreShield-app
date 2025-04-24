@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'hyechang/fontstyle.dart';
 import 'hyechang/alertPage.dart';
 import 'hyechang/hyechang_socket.dart';
+import 'socketURL.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -98,8 +99,7 @@ class _MainPageState extends State<MainPage> {
   Future<void> _loadServerData() async {
     try {
       // 소켓 연결
-      await socketService
-          .initSocket('https://8529-175-214-112-154.ngrok-free.app');
+      await socketService.initSocket(SocketConfig.socketURL);
 
       // 데이터 요청 및 응답 대기
       final result = await socketService.getMainPageData();

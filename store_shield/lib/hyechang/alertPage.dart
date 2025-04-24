@@ -8,6 +8,7 @@ import 'widget/stock_alert_item.dart';
 import 'widget/calendar_widget.dart';
 import 'fontstyle.dart';
 import 'hyechang_socket.dart';
+import '../socketURL.dart';
 
 class AlertPage extends StatefulWidget {
   const AlertPage({super.key});
@@ -73,8 +74,7 @@ class _AlertPageState extends State<AlertPage>
 
     try {
       // 소켓 연결
-      await socketService
-          .initSocket('https://8529-175-214-112-154.ngrok-free.app');
+      await socketService.initSocket(SocketConfig.socketURL);
       isConnected = true;
 
       // 데이터 로드

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'fontstyle.dart';
+import '../socketURL.dart';
 
 class SuspectDetailPage extends StatelessWidget {
   final SuspectData suspect;
@@ -255,8 +256,7 @@ class SuspectDetailPage extends StatelessWidget {
                               onPressed: () async {
                                 try {
                                   // 서버 URL - 소켓 서비스와 동일한 기본 URL 사용
-                                  const baseUrl =
-                                      'https://8529-175-214-112-154.ngrok-free.app';
+                                  const baseUrl = SocketConfig.socketURL;
                                   //일단 20
                                   const url = '$baseUrl/download_video/20';
 
