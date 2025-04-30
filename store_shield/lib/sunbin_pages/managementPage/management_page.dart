@@ -634,13 +634,21 @@ class _ManagementPageState extends State<ManagementPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         centerTitle: true,
         title: const StoreText('재고관리'),
-        actions: const [
-          Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: Icon(Icons.home, color: Colors.black)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home, color: Color(0xFF16160F)),
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+          ),
         ],
       ),
       backgroundColor: const Color(0xFFF2F5FD),
@@ -752,7 +760,8 @@ class _ManagementPageState extends State<ManagementPage> {
               margin: const EdgeInsets.symmetric(vertical: 8),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20)),
               child: Row(
                 children: [
                   ClipRRect(
@@ -766,7 +775,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 16),
                       decoration: BoxDecoration(
-                          color: const Color(0xFFF2F5FD),
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(20)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

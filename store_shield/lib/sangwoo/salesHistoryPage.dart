@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:store_shield/socketURL.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import '../hyechang/fontstyle.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'dart:convert';
 import 'dart:async';
-
-// 서버 Socket.IO URL 설정
-const String SOCKET_URL = SocketConfig.socketURL; // 실제 서버 주소로 변경 필요
+import '../hyundo/socket_service.dart'; // SocketService import 추가
 
 class SaleshistoryPage extends StatelessWidget {
   const SaleshistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // 직접 SalesCalendarPage를 반환합니다 (MaterialApp 없이)
     return const SalesCalendarPage();
   }
 }
@@ -33,22 +26,18 @@ class _SalesCalendarPageState extends State<SalesCalendarPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  // 현재 펼쳐진 항목을 추적하는 맵 추가
   final Map<int, bool> _expandedItems = {};
-
-  // 매출 데이터를 저장할 맵
   Map<DateTime, List<SalesData>> _salesEvents = {};
-
-  // 로딩 상태
   bool _isLoading = false;
   bool _isLoadingDetails = false;
   String? _errorMessage;
-
-  // 상세 데이터 로드 여부를 추적
   final Set<String> _loadedDetailDates = {};
+  static const Color backgroundColor = Color.fromRGBO(242, 245, 253, 1);
 
-  // Socket.IO 클라이언트
-  late IO.Socket socket;
+  // SocketService 인스턴스 사용
+  final _socketService = SocketService();
+  bool _mounted = true;
+  bool _isConnected = false;
 
   @override
   void initState() {
@@ -56,64 +45,57 @@ class _SalesCalendarPageState extends State<SalesCalendarPage> {
     _selectedDay = DateTime.now();
     _focusedDay = DateTime.now();
 
-    // Socket.IO 연결 설정
-    _connectSocket();
+    // 소켓 연결 상태 리스너 등록
+    _socketService.init(); // 소켓 서비스 명시적 초기화 추가
+    _socketService.addConnectionStateListener(_handleConnectionState);
+    _setupSocketListeners();
 
-    // 서버에서 데이터 로드
-    _loadSalesData(_focusedDay.year, _focusedDay.month);
+    // 중요: 이미 연결되어 있을 때와 아닐 때를 분리하여 처리
+    if (_socketService.isConnected) {
+      // 이미 연결되어 있으면 바로 데이터 요청
+      _loadSalesData(_focusedDay.year, _focusedDay.month);
+    }
+    // 연결되어 있지 않다면 handleConnectionState에서 데이터를 요청할 것임
   }
 
-  // Socket.IO 연결 설정
-  void _connectSocket() {
-    socket = IO.io(SOCKET_URL, <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': true,
+  void _handleConnectionState(bool connected) {
+    if (!_mounted) return;
+
+    setState(() {
+      _isConnected = connected;
     });
 
-    socket.onConnect((_) {
-      print('소켓 서버에 연결됨');
-    });
-
-    socket.onConnectError((error) {
-      print('소켓 연결 오류: $error');
+    if (connected) {
+      // 최초 연결 또는 재연결 시에만 데이터 요청
+      if (_errorMessage != null || _salesEvents.isEmpty) {
+        _loadSalesData(_focusedDay.year, _focusedDay.month);
+      }
+    } else {
       setState(() {
-        _errorMessage = '서버 연결 오류: $error';
+        _errorMessage = '서버 연결이 끊어졌습니다. 재연결 중...';
       });
-    });
-
-    socket.onError((error) {
-      print('소켓 오류: $error');
-    });
-
-    socket.onDisconnect((_) {
-      print('소켓 연결 끊김');
-    });
-
-    // 월별 매출 데이터 응답 처리
-    socket.on('monthly_sales_result', (data) {
-      print('월별 매출 데이터 수신: $data');
-      _handleMonthlySalesData(data);
-    });
-
-    // 일별 매출 상세 데이터 응답 처리
-    socket.on('daily_sales_result', (data) {
-      print('일별 상세 매출 데이터 수신: $data');
-      _handleDailySalesData(data);
-    });
+    }
   }
 
-  // 서버에서 월별 총액 데이터 로드
+  void _setupSocketListeners() {
+    _socketService.on('monthly_sales_result', _handleMonthlySalesData);
+    _socketService.on('daily_sales_result', _handleDailySalesData);
+  }
+
   Future<void> _loadSalesData(int year, int month) async {
+    if (!_isConnected) return;
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      // Socket.IO 이벤트 발생 (통합 인터페이스 방식)
-      socket.emit('salesPageload',
-          {'pageType': 'monthlySales', 'year': year, 'month': month});
-
+      _socketService.emit('salesPageload', {
+        'pageType': 'monthlySales',
+        'year': year,
+        'month': month
+      });
       print('월별 매출 데이터 요청: $year년 $month월');
     } catch (e) {
       setState(() {
@@ -124,106 +106,81 @@ class _SalesCalendarPageState extends State<SalesCalendarPage> {
     }
   }
 
-  // 월별 매출 데이터 처리
   void _handleMonthlySalesData(dynamic data) {
+    if (!_mounted) return;
+
     try {
       if (data is Map) {
-        // 이벤트 데이터 초기화
         final Map<DateTime, List<SalesData>> events = {};
 
         data.forEach((dateStr, value) {
           if (value is Map && dateStr is String) {
-            // 날짜 문자열을 DateTime으로 변환
             final date = DateTime.parse(dateStr);
-
-            // 해당 날짜의 총 판매액
             final totalAmount = value['total'] ?? 0;
-
-            // 캘린더에는 총액만 표시 (상세 정보는 선택 시 로드)
-            final List<SalesData> salesList = [];
-            salesList.add(
-                SalesData(amount: totalAmount.toDouble(), description: "총 매출"));
-
-            // 이벤트 맵에 추가
-            events[date] = salesList;
+            events[date] = [
+              SalesData(amount: totalAmount.toDouble(), description: "총 매출")
+            ];
           }
         });
 
         setState(() {
           _salesEvents = events;
           _isLoading = false;
-
-          // 선택된 날짜가 있으면 해당 날짜의 상세 데이터 로드
-          if (_selectedDay != null) {
-            _loadDailyDetails(_selectedDay!);
-          }
+          if (_selectedDay != null) _loadDailyDetails(_selectedDay!);
         });
-
-        print('월별 매출 데이터 로드 완료: ${events.length}일의 데이터');
       } else if (data is Map && data.containsKey('error')) {
         setState(() {
           _errorMessage = '서버 오류: ${data['error']}';
           _isLoading = false;
         });
-        print('데이터 로드 실패: ${data['error']}');
       } else {
         setState(() {
           _errorMessage = '잘못된 데이터 형식';
           _isLoading = false;
         });
-        print('잘못된 데이터 형식: $data');
       }
     } catch (e) {
       setState(() {
         _errorMessage = '데이터 처리 오류: $e';
         _isLoading = false;
       });
-      print('데이터 처리 중 오류 발생: $e');
     }
   }
 
-  // 일별 상세 데이터 로딩 메소드
   Future<void> _loadDailyDetails(DateTime day) async {
-    final dateStr = DateFormat('yyyy-MM-dd').format(day);
+    if (!_isConnected) return;
 
-    // 이미 로드된 날짜인지 확인
-    if (_loadedDetailDates.contains(dateStr)) {
-      print('이미 로드된 날짜: $dateStr');
-      return;
-    }
+    final dateStr = DateFormat('yyyy-MM-dd').format(day);
+    if (_loadedDetailDates.contains(dateStr)) return;
 
     setState(() {
       _isLoadingDetails = true;
     });
 
     try {
-      // Socket.IO 이벤트 발생 (통합 인터페이스 방식)
-      socket.emit('salesPageload', {'pageType': 'dailySales', 'date': dateStr});
-
-      print('일별 상세 매출 데이터 요청: $dateStr');
+      _socketService.emit('salesPageload', {
+        'pageType': 'dailySales',
+        'date': dateStr
+      });
     } catch (e) {
       setState(() {
         _isLoadingDetails = false;
       });
-      print('상세 데이터 요청 중 오류 발생: $e');
     }
   }
 
-  // 일별 매출 상세 데이터 처리
   void _handleDailySalesData(dynamic data) {
-    try {
-      if (data is Map && _selectedDay != null) {
-        final dateStr = DateFormat('yyyy-MM-dd').format(_selectedDay!);
+    if (!_mounted || _selectedDay == null) return;
 
-        // 기존 총액 데이터
+    try {
+      if (data is Map) {
+        final dateStr = DateFormat('yyyy-MM-dd').format(_selectedDay!);
         final normalizedDay = DateTime(
             _selectedDay!.year, _selectedDay!.month, _selectedDay!.day);
         final existingEvents = _salesEvents[normalizedDay] ?? [];
-
-        // 상세 정보 목록
         final List<SalesData> detailedSales = [];
 
-        // 총액 항목 (첫 번째 항목으로 유지)
+        // 총액 항목 유지
         if (existingEvents.isNotEmpty) {
           detailedSales.add(existingEvents.first);
         } else {
@@ -233,8 +190,7 @@ class _SalesCalendarPageState extends State<SalesCalendarPage> {
 
         // 상세 항목 추가
         if (data.containsKey('items') && data['items'] is List) {
-          final items = data['items'] as List<dynamic>;
-          for (var item in items) {
+          for (var item in data['items'] as List<dynamic>) {
             if (item is Map) {
               detailedSales.add(SalesData(
                   amount: (item['amount'] ?? 0).toDouble(),
@@ -244,31 +200,27 @@ class _SalesCalendarPageState extends State<SalesCalendarPage> {
           }
         }
 
-        // 이벤트 맵 업데이트
         setState(() {
           _salesEvents[normalizedDay] = detailedSales;
           _isLoadingDetails = false;
-          _loadedDetailDates.add(dateStr); // 로드 완료 표시
+          _loadedDetailDates.add(dateStr);
         });
-
-        print('일별 상세 데이터 로드 완료: ${detailedSales.length - 1}개 항목');
-      } else if (data is Map && data.containsKey('error')) {
-        setState(() {
-          _isLoadingDetails = false;
-        });
-        print('상세 데이터 로드 실패: ${data['error']}');
-      } else {
-        setState(() {
-          _isLoadingDetails = false;
-        });
-        print('잘못된 상세 데이터 형식: $data');
       }
     } catch (e) {
       setState(() {
         _isLoadingDetails = false;
       });
-      print('상세 데이터 처리 중 오류 발생: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    _mounted = false;
+    // 리스너만 제거하고 소켓 연결은 유지
+    _socketService.off('monthly_sales_result', _handleMonthlySalesData);
+    _socketService.off('daily_sales_result', _handleDailySalesData);
+    _socketService.removeConnectionStateListener(_handleConnectionState);
+    super.dispose();
   }
 
   List<SalesData> _getEventsForDay(DateTime day) {
@@ -302,16 +254,9 @@ class _SalesCalendarPageState extends State<SalesCalendarPage> {
   }
 
   @override
-  void dispose() {
-    // 소켓 연결 종료
-    socket.disconnect();
-    socket.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

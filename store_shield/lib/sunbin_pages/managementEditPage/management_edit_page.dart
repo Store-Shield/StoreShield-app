@@ -274,7 +274,7 @@ class _EditManagementPageState extends State<EditManagementPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 16),
                                   decoration: BoxDecoration(
-                                      color: const Color(0xFFF2F5FD),
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -282,14 +282,10 @@ class _EditManagementPageState extends State<EditManagementPage> {
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(itm['name'] as String,
-                                              style: const TextStyle(
-                                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                                          const SizedBox(height: 8),
-                                          Text(itm['price'] as String,
-                                              style: const TextStyle(
-                                                  fontSize: 16, fontWeight: FontWeight.w600)),
-                                        ],
+                                          StoreText(itm['name'] as String, fontSize: 20),
+                                          const SizedBox(height: 4),
+                                          StoreText(itm['price'] as String, fontSize: 16),
+                                        ]
                                       ),
                                       IconButton(
                                         icon: const Icon(

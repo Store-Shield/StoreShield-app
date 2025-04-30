@@ -167,13 +167,4 @@ class SocketService {
     _eventListeners.clear();
     debugPrint('소켓 서비스 정리 완료');
   }
-
-  // UI 테스트를 위한 목업 데이터 생성 메서드
-  Map<String, List<Map<String, dynamic>>> getMockData() {
-    return {
-      'daily': List.generate(7, (i) => {'total': 50000.0 + (i * 5000)}),
-      'monthly': List.generate(7, (i) => {'total': 200000.0 + (i * 30000)}),
-      'yearly': List.generate(7, (i) => {'total': 2000000.0 + (i * 300000)}),
-    };
-  }
 }

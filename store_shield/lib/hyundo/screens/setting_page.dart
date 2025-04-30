@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../hyechang/custom_bottom_navigation_bar.dart';
 import '../../hyechang/fontstyle.dart';
-import 'socket_service.dart';
 import '../../hyechang/alertPage.dart';
+import '../socket_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -147,13 +147,6 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  void _navigateToAlertPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AlertPage()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -177,13 +170,30 @@ class _SettingsPageState extends State<SettingsPage> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: screenWidth * 0.05),
-            child: GestureDetector(
-              onTap: () => _navigateToAlertPage(context),
-              child: Image.asset(
-                'lib/hyundo/assets/notificationIcon.png',
-                width: screenWidth * 0.055,
-                fit: BoxFit.contain,
+            child: IconButton(
+              icon: const Icon(
+                Icons.notifications_none, // 종 모양 아이콘
+                size: 28,
+                color: Colors.black,
               ),
+              onPressed: () {
+                // 알림 페이지로 이동
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const AlertPage(), // 알림 페이지 위젯
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                );
+              },
             ),
           ),
         ],

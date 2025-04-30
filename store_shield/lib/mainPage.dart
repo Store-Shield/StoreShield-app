@@ -6,8 +6,8 @@ import 'hyechang/custom_bottom_navigation_bar.dart';
 import 'package:intl/intl.dart';
 import 'hyechang/fontstyle.dart';
 import 'hyechang/alertPage.dart';
-import 'hyechang/hyechang_socket.dart';
 import 'socketURL.dart';
+import './hyechang/hyechang_socket.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -18,6 +18,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final SocketService socketService = SocketService();
+  static const Color backgroundColor = Color.fromRGBO(242, 245, 253, 1);
 
   late DateTime now;
   late String formattedDate;
@@ -251,10 +252,11 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           toolbarHeight: 65,
           scrolledUnderElevation: 0, // 스크롤 시 엘리베이션 효과 제거
-          backgroundColor: Colors.white, // 배경색 고정
+          backgroundColor: backgroundColor,
           surfaceTintColor: Colors.transparent, // 서피스 틴트 제거 (Material 3 효과)
 
           title: const Padding(
@@ -367,7 +369,7 @@ class _MainPageState extends State<MainPage> {
                                             )),
                                       ),
                                       const SizedBox(
-                                        width: 30,
+                                        width: 10,
                                       ),
                                       Expanded(
                                         child: Container(

@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:store_shield/socketURL.dart';
 
 class SocketService {
   static final SocketService _instance = SocketService._internal();
@@ -98,7 +98,7 @@ class SocketService {
     if (!_isConnected) {
       try {
         // 연결이 안된 경우 자동 재연결 시도
-        const serverUrl = 'https://3cd1-175-214-112-154.ngrok-free.app';
+        const serverUrl = SocketConfig.socketURL;
         await initSocket(serverUrl);
       } catch (e) {
         throw Exception('소켓 연결 실패: $e');
@@ -134,7 +134,7 @@ class SocketService {
     if (!_isConnected) {
       try {
         // 연결이 안된 경우 자동 재연결 시도
-        const serverUrl = 'https://3cd1-175-214-112-154.ngrok-free.app';
+        const serverUrl = SocketConfig.socketURL;
         await initSocket(serverUrl);
       } catch (e) {
         throw Exception('소켓 연결 실패: $e');
@@ -187,7 +187,7 @@ class SocketService {
     if (!_isConnected) {
       try {
         // 연결이 안된 경우 자동 재연결 시도
-        const serverUrl = 'https://3cd1-175-214-112-154.ngrok-free.app';
+        const serverUrl = SocketConfig.socketURL;
         await initSocket(serverUrl);
       } catch (e) {
         throw Exception('소켓 연결 실패: $e');

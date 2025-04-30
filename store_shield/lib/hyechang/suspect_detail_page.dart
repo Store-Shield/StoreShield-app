@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'model/suspectorData.dart';
-import 'dart:convert';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'fontstyle.dart';
 import '../socketURL.dart';
@@ -17,7 +15,6 @@ class SuspectDetailPage extends StatelessWidget {
     // 도난 의심 제품 총 개수 계산
     final totalStolenItems = suspect.stolenItems.values
         .fold<int>(0, (previousValue, element) => previousValue + element);
-    final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(

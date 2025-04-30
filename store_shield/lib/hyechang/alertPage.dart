@@ -7,8 +7,8 @@ import 'widget/suspect_item.dart';
 import 'widget/stock_alert_item.dart';
 import 'widget/calendar_widget.dart';
 import 'fontstyle.dart';
-import 'hyechang_socket.dart';
 import '../socketURL.dart';
+import './hyechang_socket.dart';
 
 class AlertPage extends StatefulWidget {
   const AlertPage({super.key});
@@ -257,6 +257,7 @@ class _AlertPageState extends State<AlertPage>
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight), // 앱바만의 높이
         child: ClipRRect(
@@ -508,7 +509,7 @@ class _AlertPageState extends State<AlertPage>
   Widget _buildStockAlertsTab() {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 30, 10, 20),
-      color: Colors.grey.shade100,
+      color: backgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:store_shield/hyundo/screens/sales_page.dart';
 import 'package:store_shield/hyundo/screens/setting_page.dart';
 import 'package:store_shield/mainPage.dart';
-// 화면 import (예시)
 
 class StoreShieldNaviBar extends StatelessWidget {
   final int currentIndex;
@@ -31,6 +30,7 @@ class StoreShieldNaviBar extends StatelessWidget {
       ],
       currentIndex: currentIndex,
       selectedItemColor: Colors.blue,
+      backgroundColor: Colors.white,
       onTap: (index) {
         // 현재 선택된 인덱스와 다른 경우에만 화면 전환
         if (index != currentIndex) {
