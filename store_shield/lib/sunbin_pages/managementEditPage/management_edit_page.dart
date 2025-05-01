@@ -42,17 +42,22 @@ class _EditManagementPageState extends State<EditManagementPage> {
 
   
   Future<void> _deleteOneOnServer(int idx) {
-    final completer = Completer<void>();
-    final name = _editableItems[idx]['name'] as String;
-    widget.socket.emit('delete_product', {'product_name': name});
-    widget.socket.once('delete_success', (_) {
-      setState(() => _editableItems.removeAt(idx));
-      completer.complete();
-    });
-      widget.socket.once('delete_error', (err) {
-      completer.completeError(err);
-    });
-    return completer.future;
+  final completer = Completer<void>();
+  final name = _editableItems[idx]['name'] as String;
+
+  // 1) 미리 'delete_success' / 'delete_error' 콜백을 등록
+  widget.socket.once('delete_success', (_) {
+    setState(() => _editableItems.removeAt(idx));
+    completer.complete();
+  });
+  widget.socket.once('delete_error', (err) {
+    completer.completeError(err);
+  });
+
+  // 2) 그 다음에 서버로 요청을 보냄
+  widget.socket.emit('delete_product', {'product_name': name});
+
+  return completer.future;
   }
 
   /// 전체삭제 확인 다이얼로그
