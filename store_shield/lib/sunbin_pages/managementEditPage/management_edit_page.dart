@@ -1,17 +1,17 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:async';
 import '../fontstyle.dart';
+import '../../hyundo/socket_service.dart';  // SocketService import 추가
 
 class EditManagementPage extends StatefulWidget {
   final List<Map<String,dynamic>> items;
-  final IO.Socket socket;
+  final SocketService socketService;  // IO.Socket 대신 SocketService 사용
 
   const EditManagementPage({
     Key? key,
     required this.items,
-    required this.socket,
+    required this.socketService,  // 매개변수 이름 변경
   }) : super(key: key);
 
   @override
@@ -29,27 +29,26 @@ class _EditManagementPageState extends State<EditManagementPage> {
 
   Future<void> _deleteAllOnServer() {
     final completer = Completer<void>();
-    widget.socket.emit('delete_all_products');
-    widget.socket.once('delete_all_success', (_) {
+    widget.socketService.emit('delete_all_products');  // socketService 사용
+    widget.socketService.once('delete_all_success', (_) {  // socketService 사용
       setState(() => _editableItems.clear());
-            completer.complete();
+      completer.complete();
     });
-      widget.socket.once('delete_all_error', (err) {
+    widget.socketService.once('delete_all_error', (err) {  // socketService 사용
       completer.completeError(err);
     });
     return completer.future;
   }
 
-  
   Future<void> _deleteOneOnServer(int idx) {
     final completer = Completer<void>();
     final name = _editableItems[idx]['name'] as String;
-    widget.socket.emit('delete_product', {'product_name': name});
-    widget.socket.once('delete_success', (_) {
+    widget.socketService.emit('delete_product', {'product_name': name});  // socketService 사용
+    widget.socketService.once('delete_success', (_) {  // socketService 사용
       setState(() => _editableItems.removeAt(idx));
       completer.complete();
     });
-      widget.socket.once('delete_error', (err) {
+    widget.socketService.once('delete_error', (err) {  // socketService 사용
       completer.completeError(err);
     });
     return completer.future;

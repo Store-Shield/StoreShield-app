@@ -117,6 +117,18 @@ class SocketService {
     }
   }
 
+  // SocketService 클래스에 다음 메서드 추가
+  void once(String event, Function(dynamic) handler) {
+    if (_socket != null) {
+      _socket!.once(event, handler);
+      debugPrint('일회성 이벤트 리스너 등록: $event');
+
+      // 이벤트 리스너 추적 (일회성도 추적할지 여부는 선택사항)
+      _eventListeners[event] = _eventListeners[event] ?? [];
+      _eventListeners[event]!.add(handler);
+    }
+  }
+
   void on(String event, Function(dynamic) handler) {
     if (_socket != null) {
       _socket!.on(event, handler);
