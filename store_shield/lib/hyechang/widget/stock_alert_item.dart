@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:store_shield/hyechang/fontstyle.dart';
 import '../model/stock_alert_data.dart';
+import '../../fontstyle.dart';
 
 class StockAlertItem extends StatelessWidget {
   final StockAlertData stockAlert;

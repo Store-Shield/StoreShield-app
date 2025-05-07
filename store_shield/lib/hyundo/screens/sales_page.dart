@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import '../../hyechang/custom_bottom_navigation_bar.dart';
-import '../../hyechang/fontstyle.dart';
+import '../../fontstyle.dart';
 import '../../hyechang/alertPage.dart';
-import '../socket_service.dart';
+import '../../socket_service.dart';
 
 class SalesPage extends StatefulWidget {
   const SalesPage({super.key});
@@ -117,37 +117,26 @@ class _SalesPageState extends State<SalesPage> {
     }).toList();
   }
 
-  List<Widget> _getPeriodLabels() {
+  List<String> _getXLabels() {
     final now = DateTime.now();
-
     if (selectedPeriodIndex == 0) {
-      // 일별 (최근 7일)
+      // 최근 7일: 요일(Mon, Tue, ...)로 표시
       return List.generate(7, (index) {
-        return StoreText(
-          index == 6 ? 'today' : 'D-${6 - index}',
-          fontSize: MediaQuery.of(context).size.width * 0.035,
-        );
+        final date = now.subtract(Duration(days: 6 - index));
+        return DateFormat('E').format(date); // 'E'는 요일 약어 반환 (e.g., Mon, Tue)
       });
     } else if (selectedPeriodIndex == 1) {
-      // 월별 (최근 7개월)
+      // 최근 7개월: 월(MMM)로 표시
       return List.generate(7, (index) {
-        final date = DateTime(now.year, now.month - (6 - index), 1);
-        return StoreText(
-          DateFormat('MMM').format(date),
-          fontSize: MediaQuery.of(context).size.width * 0.035,
-        );
+        final date = DateTime(now.year, now.month - (6 - index));
+        return DateFormat('MMM').format(date); // e.g., Jan, Feb
       });
     } else {
-      // 연도별 (최근 7년)
-      return List.generate(7, (index) {
-        final year = now.year - (6 - index);
-        return StoreText(
-          '$year',
-          fontSize: MediaQuery.of(context).size.width * 0.035,
-        );
-      });
+      // 최근 7년: 연도 표시
+      return List.generate(7, (index) => '${now.year - (6 - index)}');
     }
   }
+
 
   double _getMaxYValue(List<Map<String, dynamic>> data) {
     if (data.isEmpty) return 100000;
@@ -184,7 +173,7 @@ class _SalesPageState extends State<SalesPage> {
                   children: [
                     StoreText(
                       '매출',
-                      fontSize: screenWidth * 0.05,
+                      fontSize: screenWidth * 0.07,
                     ),
                   ],
                 ),
@@ -200,7 +189,7 @@ class _SalesPageState extends State<SalesPage> {
                     child: IconButton(
                       icon: const Icon(
                         Icons.notifications_none, // 종 모양 아이콘
-                        size: 28,
+                        size: 30,
                         color: Colors.black,
                       ),
                       onPressed: () {
@@ -311,7 +300,7 @@ class _SalesPageState extends State<SalesPage> {
                       Container(
                         height: screenHeight * 0.2,
                         padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
+                            horizontal: screenWidth * 0.07),
                         child: currentData.isEmpty
                             ? Center(
                                 child: Text(
@@ -327,8 +316,38 @@ class _SalesPageState extends State<SalesPage> {
                             : LineChart(
                                 LineChartData(
                                   gridData: const FlGridData(show: false),
-                                  titlesData: const FlTitlesData(show: false),
-                                  borderData: FlBorderData(show: false),
+                                  titlesData: FlTitlesData(
+                                    bottomTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        reservedSize: 40, // 여기서 값을 늘려 간격 확보
+                                        getTitlesWidget: (value, meta) {
+                                          final labels = _getXLabels();
+                                          if (value < 0 || value > 6 || value % 1 != 0) return const SizedBox.shrink();
+                                          return SideTitleWidget(
+                                            axisSide: meta.axisSide,
+                                            space: 15, // 여기서 값을 늘려 간격 확보
+                                            child: StoreText(
+                                              labels[value.toInt()],
+                                              fontSize: MediaQuery.of(context).size.width * 0.035,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                  ),
+                                  borderData: FlBorderData(
+                                    show: true, // 테두리 활성화
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.grey.shade300, // 하단 경계선 색상
+                                        width: 1, // 선 두께
+                                      ),
+                                    ),
+                                  ),
                                   minX: 0,
                                   maxX: 6,
                                   minY: 0,
@@ -349,16 +368,6 @@ class _SalesPageState extends State<SalesPage> {
                                   ],
                                 ),
                               ),
-                      ),
-                      const Divider(height: 1, color: Colors.grey),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05,
-                            vertical: screenHeight * 0.01),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: _getPeriodLabels(),
-                        ),
                       ),
                     ],
                   ),

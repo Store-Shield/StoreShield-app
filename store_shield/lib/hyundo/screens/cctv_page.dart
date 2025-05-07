@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import '../../hyechang/fontstyle.dart';
-import '../socket_service.dart';
+import '../../socket_service.dart';
+import '../../fontstyle.dart';
 
 class CctvPage extends StatefulWidget {
   const CctvPage({super.key});
@@ -103,6 +103,27 @@ class _CctvPageState extends State<CctvPage> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20), // 하단 모서리 둥글기 설정
+          ),
+        ),
+        title: const StoreText(
+          '실시간 CCTV',
+          fontSize: 25,
+          color: Color(0xFF16160F),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F), size: 25),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Center(
         child: Container(
           width: screenWidth,
@@ -110,60 +131,6 @@ class _CctvPageState extends State<CctvPage> {
           alignment: Alignment.topCenter,
           child: Column(
             children: [
-              // 앱바
-              Container(
-                width: screenWidth,
-                height: screenHeight * 0.14,
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(screenWidth * 0.06),
-                    bottomRight: Radius.circular(screenWidth * 0.06),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: screenHeight * 0.025),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: StoreText(
-                              '실시간 CCTV',
-                              fontSize: screenWidth * 0.045,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Image.asset(
-                                'lib/hyundo/assets/backBtnIcon.png',
-                                width: screenWidth * 0.055,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
               SizedBox(height: screenHeight * 0.02),
 
               Expanded(

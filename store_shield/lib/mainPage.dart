@@ -4,10 +4,10 @@ import 'package:store_shield/sangwoo/salesHistoryPage.dart';
 import 'package:store_shield/sunbin_pages/managementPage/management_page.dart';
 import 'hyechang/custom_bottom_navigation_bar.dart';
 import 'package:intl/intl.dart';
-import 'hyechang/fontstyle.dart';
-import 'hyechang/alertPage.dart';
+import 'fontstyle.dart';
 import 'socketURL.dart';
 import './hyechang/hyechang_socket.dart';
+import 'package:store_shield/hyechang/alertPage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -251,53 +251,60 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    
     return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          toolbarHeight: 65,
-          scrolledUnderElevation: 0, // 스크롤 시 엘리베이션 효과 제거
-          backgroundColor: backgroundColor,
-          surfaceTintColor: Colors.transparent, // 서피스 틴트 제거 (Material 3 효과)
-
-          title: const Padding(
-            padding: EdgeInsets.fromLTRB(111, 30, 0, 0),
-            child: StoreText(
-              "스토어 쉴드",
-              fontSize: 30,
-            ),
-          ),
-          actions: [
-            // 알림 아이콘 추가
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 19, 15, 0),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.notifications_none, // 종 모양 아이콘
-                  size: 28,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  // 알림 페이지로 이동
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const AlertPage(), // 알림 페이지 위젯
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                      transitionDuration: const Duration(milliseconds: 300),
-                    ),
-                  );
-                },
+      backgroundColor: backgroundColor,
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: StoreText(
+                "스토어 쉴드",
+                fontSize: 30,
               ),
+              centerTitle: true,
+              backgroundColor: backgroundColor,
+              elevation: 0,
+              floating: true,
+              pinned: false,
+              snap: true,
+              scrolledUnderElevation: 0, // 스크롤 시 엘리베이션 효과 제거
+              surfaceTintColor: Colors.transparent, // 서피스 틴트 제거 (Material 3 효과)
+              toolbarHeight: 65,
+              actions: [
+                Padding(
+                  padding: EdgeInsets.only(right: screenWidth * 0.05),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none, // 종 모양 아이콘
+                      size: 30,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      // 알림 페이지로 이동
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) =>
+                              const AlertPage(), // 알림 페이지 위젯
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ];
+        },
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
@@ -325,7 +332,7 @@ class _MainPageState extends State<MainPage> {
                                   child: StoreText(
                                     formattedDate,
                                     fontSize: 20,
-                                    fontWeight: FontWeight.normal,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
@@ -932,7 +939,9 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
               ),
-        bottomNavigationBar: const StoreShieldNaviBar(currentIndex: 0));
+      ),
+      bottomNavigationBar: const StoreShieldNaviBar(currentIndex: 0)
+    );
   }
 }
 

@@ -1,17 +1,17 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:async';
-import '../fontstyle.dart';
-import '../../hyundo/socket_service.dart';  // SocketService import 추가
+import '../../fontstyle.dart';
 
 class EditManagementPage extends StatefulWidget {
   final List<Map<String,dynamic>> items;
-  final SocketService socketService;  // IO.Socket 대신 SocketService 사용
+  final IO.Socket socket;
 
   const EditManagementPage({
     Key? key,
     required this.items,
-    required this.socketService,  // 매개변수 이름 변경
+    required this.socket,
   }) : super(key: key);
 
   @override
@@ -29,29 +29,35 @@ class _EditManagementPageState extends State<EditManagementPage> {
 
   Future<void> _deleteAllOnServer() {
     final completer = Completer<void>();
-    widget.socketService.emit('delete_all_products');  // socketService 사용
-    widget.socketService.once('delete_all_success', (_) {  // socketService 사용
+    widget.socket.emit('delete_all_products');
+    widget.socket.once('delete_all_success', (_) {
       setState(() => _editableItems.clear());
-      completer.complete();
+            completer.complete();
     });
-    widget.socketService.once('delete_all_error', (err) {  // socketService 사용
+      widget.socket.once('delete_all_error', (err) {
       completer.completeError(err);
     });
     return completer.future;
   }
 
+  
   Future<void> _deleteOneOnServer(int idx) {
-    final completer = Completer<void>();
-    final name = _editableItems[idx]['name'] as String;
-    widget.socketService.emit('delete_product', {'product_name': name});  // socketService 사용
-    widget.socketService.once('delete_success', (_) {  // socketService 사용
-      setState(() => _editableItems.removeAt(idx));
-      completer.complete();
-    });
-    widget.socketService.once('delete_error', (err) {  // socketService 사용
-      completer.completeError(err);
-    });
-    return completer.future;
+  final completer = Completer<void>();
+  final name = _editableItems[idx]['name'] as String;
+
+  // 1) 미리 'delete_success' / 'delete_error' 콜백을 등록
+  widget.socket.once('delete_success', (_) {
+    setState(() => _editableItems.removeAt(idx));
+    completer.complete();
+  });
+  widget.socket.once('delete_error', (err) {
+    completer.completeError(err);
+  });
+
+  // 2) 그 다음에 서버로 요청을 보냄
+  widget.socket.emit('delete_product', {'product_name': name});
+
+  return completer.future;
   }
 
   /// 전체삭제 확인 다이얼로그
@@ -185,10 +191,25 @@ class _EditManagementPageState extends State<EditManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const StoreText('재고관리 (편집)', color: Colors.black, fontWeight: FontWeight.bold),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20), // 하단 모서리 둥글기 설정
+          ),
+        ),
+        title: const StoreText(
+          '재고관리',
+          fontSize: 25,
+          color: Color(0xFF16160F),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F), size: 25),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       backgroundColor: const Color(0xFFF2F5FD),
       body: Padding(
@@ -225,7 +246,7 @@ class _EditManagementPageState extends State<EditManagementPage> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     elevation: 0,
                   ),
-                  child: const StoreText('전체삭제', color: Colors.white, fontWeight: FontWeight.bold),
+                  child: const StoreText('전체삭제', color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
@@ -236,7 +257,7 @@ class _EditManagementPageState extends State<EditManagementPage> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     elevation: 0,
                   ),
-                  child: const StoreText('완료', color: Colors.black, fontWeight: FontWeight.bold),
+                  child: const StoreText('완료', color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

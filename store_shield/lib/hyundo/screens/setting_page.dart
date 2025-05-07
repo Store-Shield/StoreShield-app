@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../hyechang/custom_bottom_navigation_bar.dart';
-import '../../hyechang/fontstyle.dart';
+import '../../fontstyle.dart';
 import '../../hyechang/alertPage.dart';
-import '../socket_service.dart';
+import '../../socket_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -154,227 +154,233 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            StoreText(
-              '설정',
-              fontSize: screenWidth * 0.05,
-            ),
-          ],
-        ),
-        centerTitle: false,
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: screenWidth * 0.05),
-            child: IconButton(
-              icon: const Icon(
-                Icons.notifications_none, // 종 모양 아이콘
-                size: 28,
-                color: Colors.black,
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: StoreText(
+                '설정',
+                fontSize: screenWidth * 0.07,
               ),
-              onPressed: () {
-                // 알림 페이지로 이동
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        const AlertPage(), // 알림 페이지 위젯
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
+              centerTitle: true,
+              backgroundColor: backgroundColor,
+              elevation: 0,
+              floating: true,
+              pinned: false,
+              snap: true,
+              scrolledUnderElevation: 0,
+              surfaceTintColor: Colors.transparent,
+              actions: [
+                Padding(
+                  padding: EdgeInsets.only(right: screenWidth * 0.05),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none, // 종 모양 아이콘
+                      size: 30,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      // 알림 페이지로 이동
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) =>
+                              const AlertPage(), // 알림 페이지 위젯
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
                       );
                     },
-                    transitionDuration: const Duration(milliseconds: 300),
                   ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: screenHeight * 0.03),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-            height: screenHeight * 0.06,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, 1),
                 ),
               ],
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'lib/hyundo/assets/alarmIcon.png',
-                        width: screenWidth * 0.04,
-                        fit: BoxFit.contain,
-                      ),
-                      SizedBox(width: screenWidth * 0.04),
-                      StoreText(
-                        '알림',
-                        fontSize: screenWidth * 0.042,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ],
-                  ),
-                  CupertinoSwitch(
-                    value: alarmEnabled,
-                    onChanged: (value) {
-                      setState(() {
-                        alarmEnabled = value;
-                      });
-                      _saveNotificationSettings();
-                    },
-                    activeColor: Colors.green,
+          ];
+        },
+        body: Column(
+          children: [
+            SizedBox(height: screenHeight * 0.03),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              height: screenHeight * 0.06,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: const Offset(0, 1),
                   ),
                 ],
               ),
-            ),
-          ),
-          SizedBox(height: screenHeight * 0.015),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Container(
-                  height: screenHeight * 0.06,
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'lib/hyundo/assets/stockIcon.png',
-                        width: screenWidth * 0.045,
-                        fit: BoxFit.contain,
-                      ),
-                      SizedBox(width: screenWidth * 0.04),
-                      StoreText(
-                        '재고 부족 개수 설정',
-                        fontSize: screenWidth * 0.042,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            showInventoryInput = !showInventoryInput;
-                          });
-                        },
-                        child: Icon(
-                          showInventoryInput
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
-                          color: Colors.grey[700],
-                          size: 28,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (showInventoryInput)
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.04,
-                        vertical: screenHeight * 0.01),
-                    child: Row(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Image.asset(
+                          'lib/hyundo/assets/alarmIcon.png',
+                          width: screenWidth * 0.04,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(width: screenWidth * 0.04),
                         StoreText(
-                          '재고 부족 기준',
+                          '알림',
                           fontSize: screenWidth * 0.042,
                           fontWeight: FontWeight.normal,
                         ),
-                        SizedBox(width: screenWidth * 0.03),
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: screenHeight * 0.03,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[200],
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                width: screenWidth * 0.15,
-                                child: Center(
-                                  child: TextField(
-                                    controller: _thresholdController,
-                                    textAlign: TextAlign.center,
-                                    textInputAction: TextInputAction.done,
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                        fontSize: screenWidth * 0.04,
-                                        fontWeight: FontWeight.normal),
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      contentPadding: EdgeInsets.zero,
-                                      isDense: true,
-                                    ),
-                                    maxLines: 1,
-                                    textAlignVertical: TextAlignVertical.center,
-                                    onSubmitted: (value) {
-                                      final parsed = int.tryParse(value);
-                                      if (parsed != null && parsed > 0) {
-                                        _updateThresholdToServer(parsed);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: screenWidth * 0.01),
-                              StoreText(
-                                '개 이하',
-                                fontSize: screenWidth * 0.042,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ],
+                      ],
+                    ),
+                    CupertinoSwitch(
+                      value: alarmEnabled,
+                      onChanged: (value) {
+                        setState(() {
+                          alarmEnabled = value;
+                        });
+                        _saveNotificationSettings();
+                      },
+                      activeColor: Colors.green,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: screenHeight * 0.015),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: screenHeight * 0.06,
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'lib/hyundo/assets/stockIcon.png',
+                          width: screenWidth * 0.045,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(width: screenWidth * 0.04),
+                        StoreText(
+                          '재고 부족 개수 설정',
+                          fontSize: screenWidth * 0.042,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showInventoryInput = !showInventoryInput;
+                            });
+                          },
+                          child: Icon(
+                            showInventoryInput
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                            color: Colors.grey[700],
+                            size: 28,
                           ),
                         ),
                       ],
                     ),
                   ),
-                SizedBox(height: showInventoryInput ? screenHeight * 0.01 : 0),
-              ],
+                  if (showInventoryInput)
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.04,
+                          vertical: screenHeight * 0.01),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          StoreText(
+                            '재고 부족 기준',
+                            fontSize: screenWidth * 0.042,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          SizedBox(width: screenWidth * 0.03),
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: screenHeight * 0.03,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue[200],
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  width: screenWidth * 0.15,
+                                  child: Center(
+                                    child: TextField(
+                                      controller: _thresholdController,
+                                      textAlign: TextAlign.center,
+                                      textInputAction: TextInputAction.done,
+                                      keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                          fontSize: screenWidth * 0.04,
+                                          fontWeight: FontWeight.normal),
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.zero,
+                                        isDense: true,
+                                      ),
+                                      maxLines: 1,
+                                      textAlignVertical: TextAlignVertical.center,
+                                      onSubmitted: (value) {
+                                        final parsed = int.tryParse(value);
+                                        if (parsed != null && parsed > 0) {
+                                          _updateThresholdToServer(parsed);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: screenWidth * 0.01),
+                                StoreText(
+                                  '개 이하',
+                                  fontSize: screenWidth * 0.042,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  SizedBox(height: showInventoryInput ? screenHeight * 0.01 : 0),
+                ],
+              ),
             ),
-          ),
-          const Spacer(),
-        ],
+            const Spacer(),
+          ],
+        ),
       ),
       bottomNavigationBar: const StoreShieldNaviBar(currentIndex: 2),
     );

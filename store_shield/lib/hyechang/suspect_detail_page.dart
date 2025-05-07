@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'model/suspectorData.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'fontstyle.dart';
 import '../socketURL.dart';
+import '../fontstyle.dart';
 
 class SuspectDetailPage extends StatelessWidget {
   final SuspectData suspect;
@@ -19,24 +19,34 @@ class SuspectDetailPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FF),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight), // 앱바만의 높이
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-          child: AppBar(
-            title: StoreText(
-              '절도 용의자 정보',
-              fontSize: screenWidth * 0.05,
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.white, // 배경색 고정
-            elevation: 0,
-            // TabBar를 제거
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20), // 하단 모서리 둥글기 설정
           ),
         ),
+        title: const StoreText(
+          '절도 용의자 정보',
+          fontSize: 25,
+          color: Color(0xFF16160F),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F), size: 25),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home, color: Color(0xFF16160F)),
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -56,7 +66,7 @@ class SuspectDetailPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: StoreText(
-                      '절도 의심자 정보',
+                      '절도 용의자 정보',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.indigo.shade800,

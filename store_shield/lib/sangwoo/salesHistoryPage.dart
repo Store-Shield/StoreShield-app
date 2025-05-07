@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import '../hyechang/fontstyle.dart';
+import '../fontstyle.dart';
 import 'dart:async';
-import '../hyundo/socket_service.dart'; // SocketService import 추가
+import '../socket_service.dart'; // SocketService import 추가
 
 class SaleshistoryPage extends StatelessWidget {
   const SaleshistoryPage({super.key});
@@ -258,28 +258,25 @@ class _SalesCalendarPageState extends State<SalesCalendarPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: backgroundColor,
         elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20), // 하단 모서리 둥글기 설정
+          ),
+        ),
         title: const StoreText(
           '매출내역',
-          fontSize: 30,
+          fontSize: 25,
           color: Color(0xFF16160F),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F), size: 25),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home, color: Color(0xFF16160F)),
-            onPressed: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
-            },
-          ),
-        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../managementEditPage/management_edit_page.dart';
 import '../socket_service.dart';
-import '../fontstyle.dart';
+import '../../fontstyle.dart';
 
 class ManagementPage extends StatefulWidget {
   const ManagementPage({super.key});
@@ -634,22 +634,23 @@ class _ManagementPageState extends State<ManagementPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20), // 하단 모서리 둥글기 설정
+          ),
+        ),
+        title: const StoreText(
+          '재고관리',
+          fontSize: 25,
+          color: Color(0xFF16160F),
+        ),
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF16160F), size: 25),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        centerTitle: true,
-        title: const StoreText('재고관리'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home, color: Color(0xFF16160F)),
-            onPressed: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
-            },
-          ),
-        ],
       ),
       backgroundColor: const Color(0xFFF2F5FD),
       body: Padding(

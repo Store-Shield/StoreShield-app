@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:store_shield/hyechang/fontstyle.dart';
 import '../model/suspectorData.dart';
 import '../suspect_detail_page.dart';
+import '../../fontstyle.dart';
 
 class SuspectItem extends StatelessWidget {
   final SuspectData suspect;
